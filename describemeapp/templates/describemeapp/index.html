@@ -1,0 +1,17 @@
+{% extends "describemeapp/layout.html" %}
+
+{% block title %}
+    Describeme
+{% endblock %}
+
+{% block links %}
+    <div class="p-link" style="background-color: rgb(209, 188, 168);">
+        <a href="{% url 'describemeapp:esp' %}" class="btn btn-outline-warning">Español</a>
+        <a href="{% url 'describemeapp:eng' %}" class="btn btn-outline-warning">English</a>
+    </div>
+{% endblock %}
+
+{% block body %}
+    <h3>Bienvenido a Describeme</h3>
+    <h3>Welcome to Describeme</h3>
+{% endblock %}

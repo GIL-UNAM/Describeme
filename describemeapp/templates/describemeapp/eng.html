@@ -1,0 +1,42 @@
+{% extends "describemeapp/layout.html" %}
+
+{% block title %}
+    Describeme - English
+{% endblock %}
+
+{% block links %}
+    <div class="p-link" style="background-color: rgb(209, 188, 168);">
+        <a href="{% url 'describemeapp:index' %}" class="btn btn-outline-warning">Home</a>
+        <a href="{% url 'describemeapp:esp' %}" class="btn btn-outline-warning">Spanish</a>
+    </div>
+{% endblock %}
+
+{% block body %}
+    <div>
+        <form action="{% url 'describemeapp:eng' %}", method="POST">
+            {% csrf_token %}
+            <div class="col-auto form">
+                {{ formulario }}
+            </div>
+            <div class="col-auto p-btn">
+                <button type="submit" class="btn btn-outline-warning" style="margin-top: 10px;">Submit</button>
+            </div>
+        </form>
+    </div>
+    
+    {% if oracion %}
+    <div>
+        <p class="res-parrafo">
+            Results for "{{ oracion }}":
+        </p>
+        <div class="d-flex bd-highlight d-flex flex-wrap" style="margin: 50px;">
+            {% if not terminos %}
+                <div class="p-2 flex-fill bd-highlight termino">Very short or unspecific phrase.</div>
+            {% endif %}
+            {% for termino in terminos %}
+                <div class="p-2 flex-fill bd-highlight termino">{{ termino }}</div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}
