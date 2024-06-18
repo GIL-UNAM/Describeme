@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 #
 #   Servidor
 #   Enlazado al localhost por el puerto 8000 con protocolo TCP/IP
@@ -113,7 +115,6 @@ Bitacora.evento(Evento.inicio_servidor, obtieneIP())
 #while True:
    # try:
         #salida = input()
-
         #if salida.upper() == output.upper():
             # Termina la conexión
             #mi_socket.close()
