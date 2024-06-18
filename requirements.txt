@@ -1,0 +1,7 @@
+django
+networkx
+nltk
+xlrd
+spacy 
+# ojo es necesario ejecutar el siguiente comando para instalar el mòdulo
+# python -m spacy download es_core_news_sm
