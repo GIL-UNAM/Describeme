@@ -1,7 +1,8 @@
 #
 
-# gcastilloh@DevSys:/etc/systemd/system$ cat midemonio.service
-```
+**/etc/systemd/system/midemonio.service**
+
+```sh
 
 [Unit]
 Description=Inicia demonio
