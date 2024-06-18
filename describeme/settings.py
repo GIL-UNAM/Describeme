@@ -16,7 +16,6 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -27,7 +26,6 @@ SECRET_KEY = 'v#pjrc(%$-*xf*i5889bkty)6!xyh(rrfho%%ws27o1s0#n&85'
 DEBUG = True
 
 ALLOWED_HOSTS = ["devsys.iingen.unam.mx", "127.0.0.1"]
-
 
 # Application definition
 
@@ -158,10 +156,6 @@ FORCE_SCRIPT_NAME = '/describeme'
 # Con esta integración, logras que tu aplicación Django funcione correctamente bajo un subdirectorio específico, 
 # manejado por Apache, y se aseguran las rutas adecuadas para todas las solicitudes y URLs generadas.
 
-
-
-
-
 ROOT_URLCONF = 'describeme.urls'
 
 TEMPLATES = [
@@ -193,7 +187,6 @@ DATABASES = {
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -211,7 +204,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
