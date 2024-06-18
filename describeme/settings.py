@@ -232,3 +232,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/describeme/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://devsys.iingen.unam.mx',
+    'http://devsys.iingen.unam.mx'
+]
