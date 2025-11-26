@@ -141,7 +141,9 @@ def diccionario_nap(definicion, grafo_asoc):
     else:
         return "Descripción muy corta favor de ampliar su descripción."
 
-#grafos = ConstruyeGrafos()
-#grafo_esp = grafos[2]
-#print(diccionario_nap("Transporte terrestre público de pasajeros muy grande", grafo_esp))
-#print(diccionario_nap("Alimento elaborado con leche. existen diferentes tipos: manchego, cotija. panela entre otros.", grafo_esp))
+if __name__ == "__main__":
+  print('comenzando!')
+  grafos = ConstruyeGrafos()
+  grafo_esp = grafos[2]
+  print(diccionario_nap("Transporte terrestre público de pasajeros muy grande", grafo_esp))
+  print(diccionario_nap("Alimento elaborado con leche. existen diferentes tipos: manchego, cotija. panela entre otros.", grafo_esp))

@@ -7,8 +7,6 @@ from nltk.stem import WordNetLemmatizer
 wordnet_lemmatizer = WordNetLemmatizer()
 from operator import itemgetter
 
-
-
 def florida_graph():
     G_asoc= nx.Graph()
     ruta = "corpus/separados_florida/"
@@ -26,8 +24,6 @@ def florida_graph():
             G_asoc.add_edge(archivo,respuesta,weight=asociacion)
     return G_asoc
 
-
-
 '''def conceptos(lista,subconjunto):
     datos = []
     if len(lista) <= 100:
@@ -38,8 +34,6 @@ def florida_graph():
         if str(lista[x][0]) not in subconjunto:
             datos.append(str(lista[x][0]).strip())
     return datos'''
-
-
 
 def construye_sugrafo_vecinal(nivel, grafo_asoc, subconjunto):
     nuevo_grafo_a = nx.Graph()
@@ -54,8 +48,6 @@ def construye_sugrafo_vecinal(nivel, grafo_asoc, subconjunto):
         vecinos = vecinos.union(nuevo_conjunto)       
     nuevo_grafo_a = nx.Graph(grafo_asoc.subgraph(vecinos))
     return nuevo_grafo_a
-
-
 
 def limpia_lematiza(cadena):
     palabras_funcionales=nltk.corpus.stopwords.words("english")
@@ -114,4 +106,7 @@ def diccionario_limitado_eng(definicion, grafo_asoc):
             encontrados = sorted(btwnCent_subset_asociacion.items(),key=itemgetter(1), reverse=True)[0:20]
     return lista_conceptos(encontrados,subconjunto_lemas)
 
-#print(diccionario("ancient fishes"))
+if __name__ = '__main__':
+  grafo_eng = florida_graph()
+  print('entrada: ancient fishes')
+  print(diccionario_limitado_eng("ancient fishes", grafo_eng))

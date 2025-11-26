@@ -112,19 +112,20 @@ acepta.start()
 Bitacora.evento(Evento.inicio_servidor, obtieneIP())
 
 # El hilo principal espera a que termine la ejecución del servidor
-#while True:
-   # try:
-        #salida = input()
-        #if salida.upper() == output.upper():
-            # Termina la conexión
-            #mi_socket.close()
+if __name__ == '__main__':
+  while True:
+    try:
+          salida = input()
+          if salida.upper() == output.upper():
+              # Termina la conexión
+              mi_socket.close()
 
-            # Guarda el fin del servidor en el archivo registros.tsv
-            #Bitacora.evento(Evento.fin_servidor, obtieneIP())
+              # Guarda el fin del servidor en el archivo registros.tsv
+              Bitacora.evento(Evento.fin_servidor, obtieneIP())
 
-            # Sale del ciclo
-            #break
-        #else:
-            #pass
-    #except EOFError:
-        #pass
+              # Sale del ciclo
+              break
+          else:
+              pass
+    except EOFError:
+          pass
