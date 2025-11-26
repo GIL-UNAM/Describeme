@@ -1,41 +1,86 @@
-# Introducción
+# Describeme
 
-Describe está interado por dos sistemas:
+Aplicación que sugiere términos relacionados a partir de una descripción corta.
+Está dividida en dos componentes:
 
-* el frontend implementado en django, que permite alimentar una consulta al sistema y mostrar los resultados, todo via web. 
-* el backend que corresponde a la aplicación propiamente dicha y que se implementa por medio de un servicio via sockets
+- Backend (demonio de sockets): carga grafos de asociación en español e inglés y responde peticiones por `localhost:5050`. Archivos clave en `describemeapp/`: `server.py`, `defineme_esp.py`, `defineme_eng.py`, `bitacora.py`.
+- Frontend (Django): formularios web que envían la frase al demonio y muestran los términos devueltos. Código principal en `describemeapp/views.py` y plantillas en `describemeapp/templates/`.
 
-## Backend
+El backend registra peticiones en `describemeapp/registros.tsv` mediante `Bitacora`.
 
-El backend está constituido por los siguientes archivos localizados dentro del directorio ./descriemeapp:
+## Requisitos previos
 
-server.py
-defineme_eng.py
-defineme_esp.py
-bitacora.py
+- Python 3.8+
+- Virtualenv (`python -m venv`) recomendado
+- Dependencias de sistema para compilar spaCy (por ejemplo, `build-essential`, `python3-dev` en Debian/Ubuntu)
+- Corpus incluidos en `describemeapp/corpus/`:
+  - `original.xls` (español)
+  - archivos en `separados_florida/` (inglés)
 
-## Frontend
+## Instalación
 
-Es una app django que se localiza en el directorio ./describemeapp 
+1) Crear y activar entorno virtual:
+```bash
+cd /var/www/Describeme
+python3 -m venv env
+source env/bin/activate
+```
 
-El front no tiene modelos definidos y todo el funcionamiento está colocado directamente en el archivo views.py mientras que los templates se localizan en el directorio ./describespp/templates
+2) Instalar dependencias de Python:
+```bash
+pip install -r requirements.txt
+python -m spacy download es_core_news_sm
+python -m spacy download en_core_web_sm
+```
 
-## Backend
+3) Descargar datos NLTK requeridos (stopwords, wordnet, omw-1.4):
+```bash
+python - <<'PY'
+import nltk
+nltk.download('stopwords')
+nltk.download('wordnet')
+nltk.download('omw-1.4')
+PY
+```
 
-El backend, es un servicio que debe levantarse y es independiente del formtend por lo que se ha creado un script que inicia el servicio en el servidor. A continuación se muestra el contenido del sevicio (midemonio.service) y que deb activarse en el servidor... 
+4) Verificar que `describemeapp/registros.tsv` sea escribible por el usuario que ejecuta el servicio.
 
-### /etc/systemd/system/midemonio.service
+## Ejecución local
 
-```shell
+1) Levantar el backend de sockets (requerido antes del front):
+```bash
+cd /var/www/Describeme
+source env/bin/activate
+cd describemeapp
+python server.py
+```
+Escucha en `localhost:5050`, carga los grafos (puede tardar unos segundos) y se detiene escribiendo `salir` en STDIN.
 
+2) Levantar el frontend Django en otra terminal:
+```bash
+cd /var/www/Describeme
+source env/bin/activate
+python manage.py migrate  # no hay modelos, pero prepara el entorno
+python manage.py runserver 0.0.0.0:8000
+```
+
+3) Uso:
+- Español: `http://localhost:8000/esp`
+- Inglés: `http://localhost:8000/eng`
+
+## Servicio systemd para el backend
+
+El script `iniciademonio.sh` activa el entorno virtual y lanza `server.py`.
+Ejemplo de unidad `/etc/systemd/system/midemonio.service` (ajuste usuario y rutas según su entorno):
+```ini
 [Unit]
-Description=Inicia demonio
+Description=Inicia demonio Describeme
 After=network.target
 
 [Service]
 ExecStart=/var/www/Describeme/iniciademonio.sh
 Restart=always
-WorkingDirectory=/var/www/
+WorkingDirectory=/var/www/Describeme
 User=usuario
 Group=www-data
 StartLimitBurst=0
@@ -44,7 +89,14 @@ StartLimitBurst=0
 WantedBy=multi-user.target
 ```
 
-## Posibles mejoras
+Aplicar y habilitar:
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable --now midemonio.service
+```
 
-* No usar django como frontend, si se cambia de lenguaje entonces se tendría que mantener el servidor y su servicio
-* si se mantiene python, pdria emplearse un framework mas ligero, por ejemplo flask e integrar el servidor en el código para evitar mantener un servicio activo siempre
+## Notas y mejoras
+
+- El frontend depende del demonio; si no está corriendo en `localhost:5050`, las vistas `esp` y `eng` no devolverán términos.
+- `registros.tsv` crece indefinidamente; considere rotarlo o moverlo a un directorio de logs.
+- Podría integrarse el backend en el propio servidor web (Flask/FastAPI) para evitar mantener un proceso separado de sockets.
